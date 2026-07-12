@@ -1,5 +1,12 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from apps.scoring.views import DepartmentScoreViewSet
 
 app_name = 'scoring'
 
-urlpatterns = []
+router = DefaultRouter()
+router.register('scores', DepartmentScoreViewSet, basename='score')
+
+urlpatterns = [
+    path('', include(router.urls)),
+]

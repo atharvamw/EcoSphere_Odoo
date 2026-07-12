@@ -1,0 +1,5047 @@
+openapi: 3.0.3
+info:
+  title: EcoSphere ESG Management Platform API
+  version: 1.0.0
+  description: API documentation for the EcoSphere ESG Platform, covering Environmental,
+    Social, Governance, and Gamification modules.
+paths:
+  /api/v1/auth/login/:
+    post:
+      operationId: auth_login_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/v1/auth/logout/:
+    post:
+      operationId: auth_logout_create
+      tags:
+      - auth
+      responses:
+        '200':
+          description: No response body
+  /api/v1/auth/refresh/:
+    post:
+      operationId: auth_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/v1/core/categories/:
+    get:
+      operationId: core_categories_list
+      tags:
+      - core
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+    post:
+      operationId: core_categories_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Category'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Category'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+  /api/v1/core/categories/{id}/:
+    get:
+      operationId: core_categories_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this category.
+        required: true
+      tags:
+      - core
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    put:
+      operationId: core_categories_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this category.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Category'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Category'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    patch:
+      operationId: core_categories_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this category.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    delete:
+      operationId: core_categories_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this category.
+        required: true
+      tags:
+      - core
+      responses:
+        '204':
+          description: No response body
+  /api/v1/core/departments/:
+    get:
+      operationId: core_departments_list
+      tags:
+      - core
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Department'
+          description: ''
+    post:
+      operationId: core_departments_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Department'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Department'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Department'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+          description: ''
+  /api/v1/core/departments/{id}/:
+    get:
+      operationId: core_departments_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this department.
+        required: true
+      tags:
+      - core
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+          description: ''
+    put:
+      operationId: core_departments_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this department.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Department'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Department'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Department'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+          description: ''
+    patch:
+      operationId: core_departments_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this department.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDepartment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDepartment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDepartment'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+          description: ''
+    delete:
+      operationId: core_departments_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this department.
+        required: true
+      tags:
+      - core
+      responses:
+        '204':
+          description: No response body
+  /api/v1/core/employees/:
+    get:
+      operationId: core_employees_list
+      tags:
+      - core
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+          description: ''
+    post:
+      operationId: core_employees_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Employee'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+          description: ''
+  /api/v1/core/employees/{id}/:
+    get:
+      operationId: core_employees_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this employee.
+        required: true
+      tags:
+      - core
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+          description: ''
+    put:
+      operationId: core_employees_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this employee.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Employee'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+          description: ''
+    patch:
+      operationId: core_employees_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this employee.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEmployee'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEmployee'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEmployee'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+          description: ''
+    delete:
+      operationId: core_employees_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this employee.
+        required: true
+      tags:
+      - core
+      responses:
+        '204':
+          description: No response body
+  /api/v1/core/leaderboard/:
+    get:
+      operationId: core_leaderboard_retrieve
+      tags:
+      - core
+      responses:
+        '200':
+          description: No response body
+  /api/v1/core/profile/:
+    get:
+      operationId: core_profile_retrieve
+      tags:
+      - core
+      responses:
+        '200':
+          description: No response body
+  /api/v1/core/settings/:
+    get:
+      operationId: core_settings_list
+      tags:
+      - core
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SiteSettings'
+          description: ''
+    post:
+      operationId: core_settings_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiteSettings'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SiteSettings'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SiteSettings'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteSettings'
+          description: ''
+  /api/v1/core/settings/{id}/:
+    get:
+      operationId: core_settings_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this site settings.
+        required: true
+      tags:
+      - core
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteSettings'
+          description: ''
+    put:
+      operationId: core_settings_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this site settings.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiteSettings'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SiteSettings'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SiteSettings'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteSettings'
+          description: ''
+    patch:
+      operationId: core_settings_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this site settings.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSiteSettings'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSiteSettings'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSiteSettings'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteSettings'
+          description: ''
+    delete:
+      operationId: core_settings_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this site settings.
+        required: true
+      tags:
+      - core
+      responses:
+        '204':
+          description: No response body
+  /api/v1/environmental/factors/:
+    get:
+      operationId: environmental_factors_list
+      tags:
+      - environmental
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmissionFactor'
+          description: ''
+    post:
+      operationId: environmental_factors_create
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmissionFactor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EmissionFactor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmissionFactor'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmissionFactor'
+          description: ''
+  /api/v1/environmental/factors/{id}/:
+    get:
+      operationId: environmental_factors_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this emission factor.
+        required: true
+      tags:
+      - environmental
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmissionFactor'
+          description: ''
+    put:
+      operationId: environmental_factors_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this emission factor.
+        required: true
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmissionFactor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EmissionFactor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmissionFactor'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmissionFactor'
+          description: ''
+    patch:
+      operationId: environmental_factors_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this emission factor.
+        required: true
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEmissionFactor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEmissionFactor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEmissionFactor'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmissionFactor'
+          description: ''
+    delete:
+      operationId: environmental_factors_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this emission factor.
+        required: true
+      tags:
+      - environmental
+      responses:
+        '204':
+          description: No response body
+  /api/v1/environmental/goals/:
+    get:
+      operationId: environmental_goals_list
+      parameters:
+      - in: query
+        name: department
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - active
+          - completed
+          - failed
+        description: |-
+          * `active` - Active
+          * `completed` - Completed
+          * `failed` - Failed
+      tags:
+      - environmental
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnvironmentalGoal'
+          description: ''
+    post:
+      operationId: environmental_goals_create
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnvironmentalGoal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnvironmentalGoal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnvironmentalGoal'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvironmentalGoal'
+          description: ''
+  /api/v1/environmental/goals/{id}/:
+    get:
+      operationId: environmental_goals_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this environmental goal.
+        required: true
+      tags:
+      - environmental
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvironmentalGoal'
+          description: ''
+    put:
+      operationId: environmental_goals_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this environmental goal.
+        required: true
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnvironmentalGoal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnvironmentalGoal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnvironmentalGoal'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvironmentalGoal'
+          description: ''
+    patch:
+      operationId: environmental_goals_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this environmental goal.
+        required: true
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEnvironmentalGoal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEnvironmentalGoal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEnvironmentalGoal'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvironmentalGoal'
+          description: ''
+    delete:
+      operationId: environmental_goals_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this environmental goal.
+        required: true
+      tags:
+      - environmental
+      responses:
+        '204':
+          description: No response body
+  /api/v1/environmental/products/:
+    get:
+      operationId: environmental_products_list
+      tags:
+      - environmental
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+          description: ''
+    post:
+      operationId: environmental_products_create
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+  /api/v1/environmental/products/{id}/:
+    get:
+      operationId: environmental_products_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product.
+        required: true
+      tags:
+      - environmental
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    put:
+      operationId: environmental_products_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product.
+        required: true
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    patch:
+      operationId: environmental_products_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product.
+        required: true
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    delete:
+      operationId: environmental_products_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product.
+        required: true
+      tags:
+      - environmental
+      responses:
+        '204':
+          description: No response body
+  /api/v1/environmental/profiles/:
+    get:
+      operationId: environmental_profiles_list
+      tags:
+      - environmental
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductESGProfile'
+          description: ''
+    post:
+      operationId: environmental_profiles_create
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductESGProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductESGProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductESGProfile'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductESGProfile'
+          description: ''
+  /api/v1/environmental/profiles/{id}/:
+    get:
+      operationId: environmental_profiles_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product esg profile.
+        required: true
+      tags:
+      - environmental
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductESGProfile'
+          description: ''
+    put:
+      operationId: environmental_profiles_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product esg profile.
+        required: true
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductESGProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductESGProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductESGProfile'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductESGProfile'
+          description: ''
+    patch:
+      operationId: environmental_profiles_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product esg profile.
+        required: true
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProductESGProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProductESGProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProductESGProfile'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductESGProfile'
+          description: ''
+    delete:
+      operationId: environmental_profiles_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this product esg profile.
+        required: true
+      tags:
+      - environmental
+      responses:
+        '204':
+          description: No response body
+  /api/v1/environmental/transactions/:
+    get:
+      operationId: environmental_transactions_list
+      parameters:
+      - in: query
+        name: department
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: transaction_date
+        schema:
+          type: string
+          format: date
+      tags:
+      - environmental
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CarbonTransaction'
+          description: ''
+    post:
+      operationId: environmental_transactions_create
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarbonTransaction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CarbonTransaction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CarbonTransaction'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarbonTransaction'
+          description: ''
+  /api/v1/environmental/transactions/{id}/:
+    get:
+      operationId: environmental_transactions_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this carbon transaction.
+        required: true
+      tags:
+      - environmental
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarbonTransaction'
+          description: ''
+    put:
+      operationId: environmental_transactions_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this carbon transaction.
+        required: true
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarbonTransaction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CarbonTransaction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CarbonTransaction'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarbonTransaction'
+          description: ''
+    patch:
+      operationId: environmental_transactions_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this carbon transaction.
+        required: true
+      tags:
+      - environmental
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCarbonTransaction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCarbonTransaction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCarbonTransaction'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarbonTransaction'
+          description: ''
+    delete:
+      operationId: environmental_transactions_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this carbon transaction.
+        required: true
+      tags:
+      - environmental
+      responses:
+        '204':
+          description: No response body
+  /api/v1/gamification/badges/:
+    get:
+      operationId: gamification_badges_list
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Badge'
+          description: ''
+    post:
+      operationId: gamification_badges_create
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Badge'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Badge'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Badge'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badge'
+          description: ''
+  /api/v1/gamification/badges/{id}/:
+    get:
+      operationId: gamification_badges_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this badge.
+        required: true
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badge'
+          description: ''
+    put:
+      operationId: gamification_badges_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this badge.
+        required: true
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Badge'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Badge'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Badge'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badge'
+          description: ''
+    patch:
+      operationId: gamification_badges_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this badge.
+        required: true
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBadge'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBadge'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBadge'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badge'
+          description: ''
+    delete:
+      operationId: gamification_badges_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this badge.
+        required: true
+      tags:
+      - gamification
+      responses:
+        '204':
+          description: No response body
+  /api/v1/gamification/challenges/:
+    get:
+      operationId: gamification_challenges_list
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Challenge'
+          description: ''
+    post:
+      operationId: gamification_challenges_create
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Challenge'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Challenge'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Challenge'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Challenge'
+          description: ''
+  /api/v1/gamification/challenges/{id}/:
+    get:
+      operationId: gamification_challenges_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this challenge.
+        required: true
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Challenge'
+          description: ''
+    put:
+      operationId: gamification_challenges_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this challenge.
+        required: true
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Challenge'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Challenge'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Challenge'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Challenge'
+          description: ''
+    patch:
+      operationId: gamification_challenges_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this challenge.
+        required: true
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedChallenge'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedChallenge'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedChallenge'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Challenge'
+          description: ''
+    delete:
+      operationId: gamification_challenges_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this challenge.
+        required: true
+      tags:
+      - gamification
+      responses:
+        '204':
+          description: No response body
+  /api/v1/gamification/employee-badges/:
+    get:
+      operationId: gamification_employee_badges_list
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmployeeBadge'
+          description: ''
+  /api/v1/gamification/employee-badges/{id}/:
+    get:
+      operationId: gamification_employee_badges_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this employee badge.
+        required: true
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeBadge'
+          description: ''
+  /api/v1/gamification/goal-definitions/:
+    get:
+      operationId: gamification_goal_definitions_list
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GoalDefinition'
+          description: ''
+    post:
+      operationId: gamification_goal_definitions_create
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoalDefinition'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GoalDefinition'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GoalDefinition'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoalDefinition'
+          description: ''
+  /api/v1/gamification/goal-definitions/{id}/:
+    get:
+      operationId: gamification_goal_definitions_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this goal definition.
+        required: true
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoalDefinition'
+          description: ''
+    put:
+      operationId: gamification_goal_definitions_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this goal definition.
+        required: true
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoalDefinition'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GoalDefinition'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GoalDefinition'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoalDefinition'
+          description: ''
+    patch:
+      operationId: gamification_goal_definitions_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this goal definition.
+        required: true
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGoalDefinition'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGoalDefinition'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGoalDefinition'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoalDefinition'
+          description: ''
+    delete:
+      operationId: gamification_goal_definitions_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this goal definition.
+        required: true
+      tags:
+      - gamification
+      responses:
+        '204':
+          description: No response body
+  /api/v1/gamification/goals/:
+    get:
+      operationId: gamification_goals_list
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Goal'
+          description: ''
+    post:
+      operationId: gamification_goals_create
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Goal'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+          description: ''
+  /api/v1/gamification/goals/{id}/:
+    get:
+      operationId: gamification_goals_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this goal.
+        required: true
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+          description: ''
+    put:
+      operationId: gamification_goals_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this goal.
+        required: true
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Goal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Goal'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+          description: ''
+    patch:
+      operationId: gamification_goals_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this goal.
+        required: true
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGoal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGoal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGoal'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+          description: ''
+    delete:
+      operationId: gamification_goals_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this goal.
+        required: true
+      tags:
+      - gamification
+      responses:
+        '204':
+          description: No response body
+  /api/v1/gamification/participations/:
+    get:
+      operationId: gamification_participations_list
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChallengeParticipation'
+          description: ''
+    post:
+      operationId: gamification_participations_create
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChallengeParticipation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChallengeParticipation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChallengeParticipation'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChallengeParticipation'
+          description: ''
+  /api/v1/gamification/participations/{id}/:
+    get:
+      operationId: gamification_participations_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this challenge participation.
+        required: true
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChallengeParticipation'
+          description: ''
+    put:
+      operationId: gamification_participations_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this challenge participation.
+        required: true
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChallengeParticipation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChallengeParticipation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChallengeParticipation'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChallengeParticipation'
+          description: ''
+    patch:
+      operationId: gamification_participations_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this challenge participation.
+        required: true
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedChallengeParticipation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedChallengeParticipation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedChallengeParticipation'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChallengeParticipation'
+          description: ''
+    delete:
+      operationId: gamification_participations_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this challenge participation.
+        required: true
+      tags:
+      - gamification
+      responses:
+        '204':
+          description: No response body
+  /api/v1/gamification/redemptions/:
+    get:
+      operationId: gamification_redemptions_list
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RewardRedemption'
+          description: ''
+  /api/v1/gamification/redemptions/{id}/:
+    get:
+      operationId: gamification_redemptions_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this reward redemption.
+        required: true
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RewardRedemption'
+          description: ''
+  /api/v1/gamification/rewards/:
+    get:
+      operationId: gamification_rewards_list
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reward'
+          description: ''
+    post:
+      operationId: gamification_rewards_create
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reward'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Reward'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Reward'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reward'
+          description: ''
+  /api/v1/gamification/rewards/{id}/:
+    get:
+      operationId: gamification_rewards_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this reward.
+        required: true
+      tags:
+      - gamification
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reward'
+          description: ''
+    put:
+      operationId: gamification_rewards_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this reward.
+        required: true
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reward'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Reward'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Reward'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reward'
+          description: ''
+    patch:
+      operationId: gamification_rewards_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this reward.
+        required: true
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedReward'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedReward'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedReward'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reward'
+          description: ''
+    delete:
+      operationId: gamification_rewards_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this reward.
+        required: true
+      tags:
+      - gamification
+      responses:
+        '204':
+          description: No response body
+  /api/v1/gamification/rewards/{id}/redeem/:
+    post:
+      operationId: gamification_rewards_redeem_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this reward.
+        required: true
+      tags:
+      - gamification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reward'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Reward'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Reward'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reward'
+          description: ''
+  /api/v1/governance/acknowledgements/:
+    get:
+      operationId: governance_acknowledgements_list
+      tags:
+      - governance
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PolicyAcknowledgement'
+          description: ''
+    post:
+      operationId: governance_acknowledgements_create
+      tags:
+      - governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyAcknowledgement'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PolicyAcknowledgement'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PolicyAcknowledgement'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyAcknowledgement'
+          description: ''
+  /api/v1/governance/acknowledgements/{id}/:
+    get:
+      operationId: governance_acknowledgements_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this policy acknowledgement.
+        required: true
+      tags:
+      - governance
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyAcknowledgement'
+          description: ''
+    put:
+      operationId: governance_acknowledgements_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this policy acknowledgement.
+        required: true
+      tags:
+      - governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyAcknowledgement'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PolicyAcknowledgement'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PolicyAcknowledgement'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyAcknowledgement'
+          description: ''
+    patch:
+      operationId: governance_acknowledgements_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this policy acknowledgement.
+        required: true
+      tags:
+      - governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPolicyAcknowledgement'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPolicyAcknowledgement'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPolicyAcknowledgement'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyAcknowledgement'
+          description: ''
+    delete:
+      operationId: governance_acknowledgements_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this policy acknowledgement.
+        required: true
+      tags:
+      - governance
+      responses:
+        '204':
+          description: No response body
+  /api/v1/governance/audits/:
+    get:
+      operationId: governance_audits_list
+      tags:
+      - governance
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Audit'
+          description: ''
+    post:
+      operationId: governance_audits_create
+      tags:
+      - governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Audit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Audit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Audit'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Audit'
+          description: ''
+  /api/v1/governance/audits/{id}/:
+    get:
+      operationId: governance_audits_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this audit.
+        required: true
+      tags:
+      - governance
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Audit'
+          description: ''
+    put:
+      operationId: governance_audits_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this audit.
+        required: true
+      tags:
+      - governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Audit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Audit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Audit'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Audit'
+          description: ''
+    patch:
+      operationId: governance_audits_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this audit.
+        required: true
+      tags:
+      - governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAudit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAudit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAudit'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Audit'
+          description: ''
+    delete:
+      operationId: governance_audits_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this audit.
+        required: true
+      tags:
+      - governance
+      responses:
+        '204':
+          description: No response body
+  /api/v1/governance/compliance-issues/:
+    get:
+      operationId: governance_compliance_issues_list
+      parameters:
+      - in: query
+        name: owner
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - open
+          - overdue
+          - resolved
+        description: |-
+          * `open` - Open
+          * `overdue` - Overdue
+          * `resolved` - Resolved
+      tags:
+      - governance
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComplianceIssue'
+          description: ''
+    post:
+      operationId: governance_compliance_issues_create
+      tags:
+      - governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComplianceIssue'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ComplianceIssue'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ComplianceIssue'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceIssue'
+          description: ''
+  /api/v1/governance/compliance-issues/{id}/:
+    get:
+      operationId: governance_compliance_issues_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this compliance issue.
+        required: true
+      tags:
+      - governance
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceIssue'
+          description: ''
+    put:
+      operationId: governance_compliance_issues_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this compliance issue.
+        required: true
+      tags:
+      - governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComplianceIssue'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ComplianceIssue'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ComplianceIssue'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceIssue'
+          description: ''
+    patch:
+      operationId: governance_compliance_issues_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this compliance issue.
+        required: true
+      tags:
+      - governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedComplianceIssue'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedComplianceIssue'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedComplianceIssue'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceIssue'
+          description: ''
+    delete:
+      operationId: governance_compliance_issues_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this compliance issue.
+        required: true
+      tags:
+      - governance
+      responses:
+        '204':
+          description: No response body
+  /api/v1/governance/policies/:
+    get:
+      operationId: governance_policies_list
+      tags:
+      - governance
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ESGPolicy'
+          description: ''
+    post:
+      operationId: governance_policies_create
+      tags:
+      - governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ESGPolicy'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ESGPolicy'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ESGPolicy'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ESGPolicy'
+          description: ''
+  /api/v1/governance/policies/{id}/:
+    get:
+      operationId: governance_policies_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this esg policy.
+        required: true
+      tags:
+      - governance
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ESGPolicy'
+          description: ''
+    put:
+      operationId: governance_policies_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this esg policy.
+        required: true
+      tags:
+      - governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ESGPolicy'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ESGPolicy'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ESGPolicy'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ESGPolicy'
+          description: ''
+    patch:
+      operationId: governance_policies_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this esg policy.
+        required: true
+      tags:
+      - governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedESGPolicy'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedESGPolicy'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedESGPolicy'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ESGPolicy'
+          description: ''
+    delete:
+      operationId: governance_policies_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this esg policy.
+        required: true
+      tags:
+      - governance
+      responses:
+        '204':
+          description: No response body
+  /api/v1/notifications/:
+    get:
+      operationId: notifications_list
+      tags:
+      - notifications
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationEvent'
+          description: ''
+    post:
+      operationId: notifications_create
+      tags:
+      - notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationEvent'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationEvent'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationEvent'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationEvent'
+          description: ''
+  /api/v1/notifications/{id}/:
+    get:
+      operationId: notifications_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this notification event.
+        required: true
+      tags:
+      - notifications
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationEvent'
+          description: ''
+    put:
+      operationId: notifications_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this notification event.
+        required: true
+      tags:
+      - notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationEvent'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationEvent'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationEvent'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationEvent'
+          description: ''
+    patch:
+      operationId: notifications_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this notification event.
+        required: true
+      tags:
+      - notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedNotificationEvent'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNotificationEvent'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNotificationEvent'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationEvent'
+          description: ''
+    delete:
+      operationId: notifications_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this notification event.
+        required: true
+      tags:
+      - notifications
+      responses:
+        '204':
+          description: No response body
+  /api/v1/notifications/{id}/read/:
+    post:
+      operationId: notifications_read_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this notification event.
+        required: true
+      tags:
+      - notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationEvent'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationEvent'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationEvent'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationEvent'
+          description: ''
+  /api/v1/notifications/unread/:
+    get:
+      operationId: notifications_unread_retrieve
+      tags:
+      - notifications
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationEvent'
+          description: ''
+  /api/v1/scoring/scores/:
+    get:
+      operationId: scoring_scores_list
+      parameters:
+      - in: query
+        name: department
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: period_end
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: period_start
+        schema:
+          type: string
+          format: date
+      tags:
+      - scoring
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DepartmentScore'
+          description: ''
+    post:
+      operationId: scoring_scores_create
+      tags:
+      - scoring
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartmentScore'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DepartmentScore'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DepartmentScore'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentScore'
+          description: ''
+  /api/v1/scoring/scores/{id}/:
+    get:
+      operationId: scoring_scores_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this department score.
+        required: true
+      tags:
+      - scoring
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentScore'
+          description: ''
+    put:
+      operationId: scoring_scores_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this department score.
+        required: true
+      tags:
+      - scoring
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartmentScore'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DepartmentScore'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DepartmentScore'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentScore'
+          description: ''
+    patch:
+      operationId: scoring_scores_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this department score.
+        required: true
+      tags:
+      - scoring
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDepartmentScore'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDepartmentScore'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDepartmentScore'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentScore'
+          description: ''
+    delete:
+      operationId: scoring_scores_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this department score.
+        required: true
+      tags:
+      - scoring
+      responses:
+        '204':
+          description: No response body
+  /api/v1/social/activities/:
+    get:
+      operationId: social_activities_list
+      tags:
+      - social
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CSRActivity'
+          description: ''
+    post:
+      operationId: social_activities_create
+      tags:
+      - social
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CSRActivity'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CSRActivity'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CSRActivity'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CSRActivity'
+          description: ''
+  /api/v1/social/activities/{id}/:
+    get:
+      operationId: social_activities_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this csr activity.
+        required: true
+      tags:
+      - social
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CSRActivity'
+          description: ''
+    put:
+      operationId: social_activities_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this csr activity.
+        required: true
+      tags:
+      - social
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CSRActivity'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CSRActivity'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CSRActivity'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CSRActivity'
+          description: ''
+    patch:
+      operationId: social_activities_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this csr activity.
+        required: true
+      tags:
+      - social
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCSRActivity'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCSRActivity'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCSRActivity'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CSRActivity'
+          description: ''
+    delete:
+      operationId: social_activities_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this csr activity.
+        required: true
+      tags:
+      - social
+      responses:
+        '204':
+          description: No response body
+  /api/v1/social/participations/:
+    get:
+      operationId: social_participations_list
+      tags:
+      - social
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmployeeParticipation'
+          description: ''
+    post:
+      operationId: social_participations_create
+      tags:
+      - social
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeParticipation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EmployeeParticipation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmployeeParticipation'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeParticipation'
+          description: ''
+  /api/v1/social/participations/{id}/:
+    get:
+      operationId: social_participations_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this employee participation.
+        required: true
+      tags:
+      - social
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeParticipation'
+          description: ''
+    put:
+      operationId: social_participations_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this employee participation.
+        required: true
+      tags:
+      - social
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeParticipation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EmployeeParticipation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmployeeParticipation'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeParticipation'
+          description: ''
+    patch:
+      operationId: social_participations_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this employee participation.
+        required: true
+      tags:
+      - social
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEmployeeParticipation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEmployeeParticipation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEmployeeParticipation'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeParticipation'
+          description: ''
+    delete:
+      operationId: social_participations_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this employee participation.
+        required: true
+      tags:
+      - social
+      responses:
+        '204':
+          description: No response body
+  /api/v1/social/participations/{id}/approve/:
+    post:
+      operationId: social_participations_approve_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this employee participation.
+        required: true
+      tags:
+      - social
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeParticipation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EmployeeParticipation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmployeeParticipation'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeParticipation'
+          description: ''
+components:
+  schemas:
+    ApprovalStatusEnum:
+      enum:
+      - pending
+      - approved
+      - rejected
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `approved` - Approved
+        * `rejected` - Rejected
+    Audit:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        department:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 255
+        audit_type:
+          type: string
+          maxLength: 100
+        audit_date:
+          type: string
+          format: date
+        status:
+          $ref: '#/components/schemas/AuditStatusEnum'
+        auditor:
+          type: string
+          format: uuid
+          nullable: true
+        findings:
+          type: string
+          nullable: true
+      required:
+      - audit_date
+      - audit_type
+      - department
+      - id
+      - title
+    AuditStatusEnum:
+      enum:
+      - planned
+      - in_progress
+      - completed
+      - cancelled
+      type: string
+      description: |-
+        * `planned` - Planned
+        * `in_progress` - In Progress
+        * `completed` - Completed
+        * `cancelled` - Cancelled
+    AwardTypeEnum:
+      enum:
+      - auto
+      - manual
+      type: string
+      description: |-
+        * `auto` - Auto
+        * `manual` - Manual
+    Badge:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        unlock_rule_type:
+          type: string
+          maxLength: 100
+        unlock_goal_definition:
+          type: string
+          format: uuid
+          nullable: true
+        unlock_threshold:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        grant_permission:
+          type: string
+          nullable: true
+          maxLength: 100
+        limitation_number:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        icon_path:
+          type: string
+          nullable: true
+          maxLength: 255
+      required:
+      - description
+      - id
+      - name
+      - unlock_rule_type
+      - unlock_threshold
+    CSRActivity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        department:
+          type: string
+          format: uuid
+          nullable: true
+        category:
+          type: string
+          format: uuid
+          nullable: true
+        reward_points:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        reward_xp:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        activity_date:
+          type: string
+          format: date
+          nullable: true
+        status:
+          $ref: '#/components/schemas/Status118Enum'
+      required:
+      - description
+      - id
+      - title
+    CarbonTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        department:
+          type: string
+          format: uuid
+          nullable: true
+        emission_factor:
+          type: string
+          format: uuid
+          nullable: true
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        co2e_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        source_record_type:
+          type: string
+          nullable: true
+          maxLength: 100
+        source_record_id:
+          type: string
+          format: uuid
+          nullable: true
+        is_manual_override:
+          type: boolean
+        override_reason:
+          type: string
+          nullable: true
+        transaction_date:
+          type: string
+          format: date
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - co2e_amount
+      - created_at
+      - id
+      - quantity
+      - transaction_date
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        status:
+          $ref: '#/components/schemas/StatusA3eEnum'
+      required:
+      - id
+      - name
+      - type
+    Challenge:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        category:
+          type: string
+          format: uuid
+          nullable: true
+        department:
+          type: string
+          format: uuid
+          nullable: true
+        description:
+          type: string
+        xp:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        difficulty:
+          type: string
+          maxLength: 50
+        periodicity:
+          type: string
+          maxLength: 50
+        assignment_rule:
+          type: string
+          nullable: true
+          maxLength: 255
+        evidence_required:
+          type: boolean
+        start_date:
+          type: string
+          format: date
+        deadline:
+          type: string
+          format: date
+        status:
+          $ref: '#/components/schemas/Status118Enum'
+      required:
+      - deadline
+      - description
+      - difficulty
+      - id
+      - periodicity
+      - start_date
+      - title
+    ChallengeParticipation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        challenge:
+          type: string
+          format: uuid
+        employee:
+          type: string
+          format: uuid
+        progress:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        proof_file_path:
+          type: string
+          nullable: true
+          maxLength: 255
+        approval_status:
+          allOf:
+          - $ref: '#/components/schemas/ApprovalStatusEnum'
+          readOnly: true
+        approved_by:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        xp_awarded:
+          type: integer
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/Status66dEnum'
+          readOnly: true
+      required:
+      - approval_status
+      - approved_by
+      - challenge
+      - employee
+      - id
+      - status
+      - xp_awarded
+    ComplianceIssue:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        audit:
+          type: string
+          format: uuid
+          nullable: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        due_date:
+          type: string
+          format: date
+        status:
+          $ref: '#/components/schemas/ComplianceIssueStatusEnum'
+        owner:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        resolved_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+      required:
+      - created_at
+      - description
+      - due_date
+      - id
+      - owner
+      - resolved_at
+      - title
+    ComplianceIssueStatusEnum:
+      enum:
+      - open
+      - overdue
+      - resolved
+      type: string
+      description: |-
+        * `open` - Open
+        * `overdue` - Overdue
+        * `resolved` - Resolved
+    Department:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        code:
+          type: string
+          maxLength: 50
+        head_employee:
+          type: string
+          format: uuid
+          nullable: true
+        parent_department:
+          type: string
+          format: uuid
+          nullable: true
+        employee_count:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        status:
+          $ref: '#/components/schemas/StatusA3eEnum'
+      required:
+      - code
+      - id
+      - name
+    DepartmentScore:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        department:
+          type: string
+          format: uuid
+        environmental_score:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        social_score:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        governance_score:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        total_score:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        period_start:
+          type: string
+          format: date
+        period_end:
+          type: string
+          format: date
+        calculated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - calculated_at
+      - department
+      - environmental_score
+      - governance_score
+      - id
+      - period_end
+      - period_start
+      - social_score
+      - total_score
+    ESGPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        content:
+          type: string
+        version:
+          type: string
+          maxLength: 50
+        effective_date:
+          type: string
+          format: date
+        status:
+          $ref: '#/components/schemas/ESGPolicyStatusEnum'
+      required:
+      - content
+      - effective_date
+      - id
+      - title
+      - version
+    ESGPolicyStatusEnum:
+      enum:
+      - draft
+      - active
+      - retired
+      type: string
+      description: |-
+        * `draft` - Draft
+        * `active` - Active
+        * `retired` - Retired
+    EmissionFactor:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        source_type:
+          type: string
+          maxLength: 100
+        factor_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,6})?$
+        unit:
+          type: string
+          maxLength: 50
+        standard_reference:
+          type: string
+          nullable: true
+          maxLength: 255
+      required:
+      - factor_value
+      - id
+      - name
+      - source_type
+      - unit
+    Employee:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        department:
+          allOf:
+          - $ref: '#/components/schemas/Department'
+          readOnly: true
+        xp_total:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        points_balance:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+      required:
+      - department
+      - id
+      - user
+    EmployeeBadge:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        employee:
+          type: string
+          format: uuid
+        badge:
+          type: string
+          format: uuid
+        awarded_at:
+          type: string
+          format: date-time
+          readOnly: true
+        granted_by:
+          type: string
+          format: uuid
+          nullable: true
+        award_type:
+          $ref: '#/components/schemas/AwardTypeEnum'
+      required:
+      - awarded_at
+      - badge
+      - employee
+      - id
+    EmployeeParticipation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        employee:
+          type: string
+          format: uuid
+        activity:
+          type: string
+          format: uuid
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusE94Enum'
+          readOnly: true
+        evidence_file:
+          type: string
+          format: uri
+          nullable: true
+        submitted_at:
+          type: string
+          format: date-time
+          readOnly: true
+        approved_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        approved_by:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+      required:
+      - activity
+      - approved_at
+      - approved_by
+      - employee
+      - id
+      - status
+      - submitted_at
+    EnvironmentalGoal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        department:
+          type: string
+          format: uuid
+        target_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        current_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        unit:
+          type: string
+          maxLength: 50
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        status:
+          $ref: '#/components/schemas/Status66dEnum'
+      required:
+      - department
+      - end_date
+      - id
+      - start_date
+      - target_value
+      - title
+      - unit
+    Goal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        goal_definition:
+          type: string
+          format: uuid
+        challenge:
+          type: string
+          format: uuid
+        condition:
+          type: string
+          maxLength: 50
+        target_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        current_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+      required:
+      - challenge
+      - condition
+      - goal_definition
+      - id
+      - target_value
+    GoalDefinition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        source_model:
+          type: string
+          maxLength: 100
+        source_field:
+          type: string
+          maxLength: 100
+        computation:
+          type: string
+          maxLength: 100
+        scope:
+          type: string
+          maxLength: 50
+        suffix:
+          type: string
+          nullable: true
+          maxLength: 50
+      required:
+      - computation
+      - id
+      - name
+      - scope
+      - source_field
+      - source_model
+    NotificationEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        recipient:
+          type: string
+          format: uuid
+        event_type:
+          type: string
+          maxLength: 100
+        context: {}
+        is_read:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - event_type
+      - id
+      - recipient
+    PatchedAudit:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        department:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 255
+        audit_type:
+          type: string
+          maxLength: 100
+        audit_date:
+          type: string
+          format: date
+        status:
+          $ref: '#/components/schemas/AuditStatusEnum'
+        auditor:
+          type: string
+          format: uuid
+          nullable: true
+        findings:
+          type: string
+          nullable: true
+    PatchedBadge:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        unlock_rule_type:
+          type: string
+          maxLength: 100
+        unlock_goal_definition:
+          type: string
+          format: uuid
+          nullable: true
+        unlock_threshold:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        grant_permission:
+          type: string
+          nullable: true
+          maxLength: 100
+        limitation_number:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        icon_path:
+          type: string
+          nullable: true
+          maxLength: 255
+    PatchedCSRActivity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        department:
+          type: string
+          format: uuid
+          nullable: true
+        category:
+          type: string
+          format: uuid
+          nullable: true
+        reward_points:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        reward_xp:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        activity_date:
+          type: string
+          format: date
+          nullable: true
+        status:
+          $ref: '#/components/schemas/Status118Enum'
+    PatchedCarbonTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        department:
+          type: string
+          format: uuid
+          nullable: true
+        emission_factor:
+          type: string
+          format: uuid
+          nullable: true
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        co2e_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        source_record_type:
+          type: string
+          nullable: true
+          maxLength: 100
+        source_record_id:
+          type: string
+          format: uuid
+          nullable: true
+        is_manual_override:
+          type: boolean
+        override_reason:
+          type: string
+          nullable: true
+        transaction_date:
+          type: string
+          format: date
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        status:
+          $ref: '#/components/schemas/StatusA3eEnum'
+    PatchedChallenge:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        category:
+          type: string
+          format: uuid
+          nullable: true
+        department:
+          type: string
+          format: uuid
+          nullable: true
+        description:
+          type: string
+        xp:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        difficulty:
+          type: string
+          maxLength: 50
+        periodicity:
+          type: string
+          maxLength: 50
+        assignment_rule:
+          type: string
+          nullable: true
+          maxLength: 255
+        evidence_required:
+          type: boolean
+        start_date:
+          type: string
+          format: date
+        deadline:
+          type: string
+          format: date
+        status:
+          $ref: '#/components/schemas/Status118Enum'
+    PatchedChallengeParticipation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        challenge:
+          type: string
+          format: uuid
+        employee:
+          type: string
+          format: uuid
+        progress:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        proof_file_path:
+          type: string
+          nullable: true
+          maxLength: 255
+        approval_status:
+          allOf:
+          - $ref: '#/components/schemas/ApprovalStatusEnum'
+          readOnly: true
+        approved_by:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        xp_awarded:
+          type: integer
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/Status66dEnum'
+          readOnly: true
+    PatchedComplianceIssue:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        audit:
+          type: string
+          format: uuid
+          nullable: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        due_date:
+          type: string
+          format: date
+        status:
+          $ref: '#/components/schemas/ComplianceIssueStatusEnum'
+        owner:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        resolved_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+    PatchedDepartment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        code:
+          type: string
+          maxLength: 50
+        head_employee:
+          type: string
+          format: uuid
+          nullable: true
+        parent_department:
+          type: string
+          format: uuid
+          nullable: true
+        employee_count:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        status:
+          $ref: '#/components/schemas/StatusA3eEnum'
+    PatchedDepartmentScore:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        department:
+          type: string
+          format: uuid
+        environmental_score:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        social_score:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        governance_score:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        total_score:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        period_start:
+          type: string
+          format: date
+        period_end:
+          type: string
+          format: date
+        calculated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedESGPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        content:
+          type: string
+        version:
+          type: string
+          maxLength: 50
+        effective_date:
+          type: string
+          format: date
+        status:
+          $ref: '#/components/schemas/ESGPolicyStatusEnum'
+    PatchedEmissionFactor:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        source_type:
+          type: string
+          maxLength: 100
+        factor_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,6})?$
+        unit:
+          type: string
+          maxLength: 50
+        standard_reference:
+          type: string
+          nullable: true
+          maxLength: 255
+    PatchedEmployee:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        department:
+          allOf:
+          - $ref: '#/components/schemas/Department'
+          readOnly: true
+        xp_total:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        points_balance:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+    PatchedEmployeeParticipation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        employee:
+          type: string
+          format: uuid
+        activity:
+          type: string
+          format: uuid
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusE94Enum'
+          readOnly: true
+        evidence_file:
+          type: string
+          format: uri
+          nullable: true
+        submitted_at:
+          type: string
+          format: date-time
+          readOnly: true
+        approved_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        approved_by:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+    PatchedEnvironmentalGoal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        department:
+          type: string
+          format: uuid
+        target_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        current_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        unit:
+          type: string
+          maxLength: 50
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        status:
+          $ref: '#/components/schemas/Status66dEnum'
+    PatchedGoal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        goal_definition:
+          type: string
+          format: uuid
+        challenge:
+          type: string
+          format: uuid
+        condition:
+          type: string
+          maxLength: 50
+        target_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        current_value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+    PatchedGoalDefinition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        source_model:
+          type: string
+          maxLength: 100
+        source_field:
+          type: string
+          maxLength: 100
+        computation:
+          type: string
+          maxLength: 100
+        scope:
+          type: string
+          maxLength: 50
+        suffix:
+          type: string
+          nullable: true
+          maxLength: 50
+    PatchedNotificationEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        recipient:
+          type: string
+          format: uuid
+        event_type:
+          type: string
+          maxLength: 100
+        context: {}
+        is_read:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedPolicyAcknowledgement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        policy:
+          type: string
+          format: uuid
+        employee:
+          type: string
+          format: uuid
+        acknowledged_at:
+          type: string
+          format: date-time
+          readOnly: true
+        signature:
+          type: string
+          nullable: true
+          maxLength: 255
+    PatchedProduct:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        code:
+          type: string
+          maxLength: 100
+        sku:
+          type: string
+          nullable: true
+          maxLength: 100
+        status:
+          $ref: '#/components/schemas/StatusA3eEnum'
+        esg_profile:
+          allOf:
+          - $ref: '#/components/schemas/ProductESGProfile'
+          readOnly: true
+    PatchedProductESGProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        carbon_footprint_co2e:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        recycled_content_pct:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        has_biodegradable_packaging:
+          type: boolean
+        hazardous_materials_flag:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedReward:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        point_cost:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        stock:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+    PatchedSiteSettings:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        auto_emission_calculation_enabled:
+          type: boolean
+        evidence_requirement_enabled:
+          type: boolean
+        badge_auto_award_enabled:
+          type: boolean
+        environmental_weight:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+        social_weight:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+        governance_weight:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+    PolicyAcknowledgement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        policy:
+          type: string
+          format: uuid
+        employee:
+          type: string
+          format: uuid
+        acknowledged_at:
+          type: string
+          format: date-time
+          readOnly: true
+        signature:
+          type: string
+          nullable: true
+          maxLength: 255
+      required:
+      - acknowledged_at
+      - employee
+      - id
+      - policy
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        code:
+          type: string
+          maxLength: 100
+        sku:
+          type: string
+          nullable: true
+          maxLength: 100
+        status:
+          $ref: '#/components/schemas/StatusA3eEnum'
+        esg_profile:
+          allOf:
+          - $ref: '#/components/schemas/ProductESGProfile'
+          readOnly: true
+      required:
+      - code
+      - esg_profile
+      - id
+      - name
+    ProductESGProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        carbon_footprint_co2e:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        recycled_content_pct:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        has_biodegradable_packaging:
+          type: boolean
+        hazardous_materials_flag:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - product
+      - updated_at
+    Reward:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        point_cost:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        stock:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - description
+      - id
+      - name
+      - point_cost
+    RewardRedemption:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        employee:
+          type: string
+          format: uuid
+        reward:
+          type: string
+          format: uuid
+        redeemed_at:
+          type: string
+          format: date-time
+          readOnly: true
+        points_spent:
+          type: integer
+          readOnly: true
+      required:
+      - employee
+      - id
+      - points_spent
+      - redeemed_at
+      - reward
+    RoleEnum:
+      enum:
+      - admin
+      - esg_manager
+      - dept_head
+      - employee
+      type: string
+      description: |-
+        * `admin` - Admin
+        * `esg_manager` - ESG Manager
+        * `dept_head` - Department Head
+        * `employee` - Employee
+    SiteSettings:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        auto_emission_calculation_enabled:
+          type: boolean
+        evidence_requirement_enabled:
+          type: boolean
+        badge_auto_award_enabled:
+          type: boolean
+        environmental_weight:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+        social_weight:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+        governance_weight:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+      required:
+      - id
+    Status118Enum:
+      enum:
+      - draft
+      - active
+      - archived
+      type: string
+      description: |-
+        * `draft` - Draft
+        * `active` - Active
+        * `archived` - Archived
+    Status66dEnum:
+      enum:
+      - active
+      - completed
+      - failed
+      type: string
+      description: |-
+        * `active` - Active
+        * `completed` - Completed
+        * `failed` - Failed
+    StatusA3eEnum:
+      enum:
+      - active
+      - inactive
+      type: string
+      description: |-
+        * `active` - Active
+        * `inactive` - Inactive
+    StatusE94Enum:
+      enum:
+      - pending
+      - approved
+      - rejected
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `approved` - Approved
+        * `rejected` - Rejected
+    TokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - password
+      - refresh
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TypeEnum:
+      enum:
+      - CSR Activity
+      - Challenge
+      type: string
+      description: |-
+        * `CSR Activity` - CSR Activity
+        * `Challenge` - Challenge
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+      required:
+      - id
+      - username
