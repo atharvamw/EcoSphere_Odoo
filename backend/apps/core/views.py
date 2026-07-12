@@ -79,3 +79,63 @@ class LogoutView(APIView):
         response.delete_cookie(settings.SIMPLE_JWT['AUTH_COOKIE'], **cookie_settings)
         response.delete_cookie(settings.SIMPLE_JWT['AUTH_COOKIE_REFRESH'], **cookie_settings)
         return response
+
+
+# Core REST Viewsets
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from apps.core.models import Category, Department, Employee, SiteSettings
+from apps.core.serializers import CategorySerializer, DepartmentSerializer, EmployeeSerializer, SiteSettingsSerializer
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated]
+
+
+class DepartmentViewSet(viewsets.ModelViewSet):
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class EmployeeViewSet(viewsets.ModelViewSet):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class SiteSettingsViewSet(viewsets.ModelViewSet):
+    queryset = SiteSettings.objects.all()
+    serializer_class = SiteSettingsSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Only return the singleton instance
+        settings = SiteSettings.get_settings()
+        return SiteSettings.objects.filter(pk=settings.pk)
+
+
+class ProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            employee = request.user.employee
+            serializer = EmployeeSerializer(employee)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except AttributeError:
+            return Response(
+                {"detail": "Logged-in user is not associated with an Employee profile."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+
+class LeaderboardView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        ranking = Employee.objects.get_leaderboard_ranking()
+        serializer = EmployeeSerializer(ranking, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
