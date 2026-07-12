@@ -12,6 +12,7 @@ This document records the significant architectural and technical decisions made
 - [DEC-004: UI Component Architecture (shadcn/ui + Radix)](#dec-004-ui-component-architecture-shadcnui--radix)
 - [DEC-005: Async Tasks & Job Scheduling (Celery + Redis)](#dec-005-async-tasks--job-scheduling-celery--redis)
 - [DEC-006: Real-time Communication (HTTP Polling over WebSockets)](#dec-006-real-time-communication-http-polling-over-websockets)
+- [DEC-007: Backend Session & Local Testing Architecture](#dec-007-backend-session--local-testing-architecture)
 
 ---
 
@@ -72,3 +73,16 @@ This document records the significant architectural and technical decisions made
 * **Context:** The UI needs to display in-app notifications (e.g., badge unlocks, approvals, compliance issues). However, none of these notifications require sub-second real-time delivery (unlike chat apps).
 * **Decision:** Selected **HTTP Polling (30s interval via TanStack Query) over WebSockets**.
 * **Rationale:** WebSockets (via Django Channels + Daphne ASGI server) introduce significant infrastructure complexity: persistent open TCP connections, connection authentication state-sharing, sticky sessions, and Daphne configuration. Polling standard DRF endpoints every 30 seconds requires zero extra infrastructure, is stateless, scales easily, and has negligible resource impact at enterprise user scale.
+
+---
+
+### DEC-007: Backend Session & Local Testing Architecture
+
+* **Status:** Approved
+* **Date:** 2026-07-12
+* **Context:** The platform requires secure session token handling to prevent client-side token exposure (XSS). Additionally, the backend must support lightweight local testing, CI runner testing, and full-featured PostgreSQL integration without locking the developer into a strict Docker-only local flow.
+* **Decision:** 
+  1. Implemented a custom `CookieJWTAuthentication` system that reads JWTs from secure `httpOnly` cookies (`access_token` and `refresh_token`), falling back to standard HTTP headers for developer utility (e.g., Swagger/OpenAPI docs interactive trials).
+  2. Integrated `django-environ` with standard DB URL parsing, falling back to a local SQLite database if Postgres is not active or specified, enabling unit test suites and code validation to run out-of-the-box.
+  3. Placed the `pytest.ini` and `tests/` directory at the repository root of `EcoSphere_Odoo/` rather than within individual app directories, facilitating a centralized unit and integration testing suite.
+* **Rationale:** A custom JWT subclass keeps auth cookies secure in the browser while allowing Swagger to still execute queries via token headers. A database connection fallback ensures the test runner (`pytest`) remains simple and accessible to developers in any environment (including those without active Docker engines), while maintaining Postgres parity for live staging and production.
