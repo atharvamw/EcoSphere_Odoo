@@ -4,7 +4,8 @@ from apps.governance.views import (
     ESGPolicyViewSet,
     PolicyAcknowledgementViewSet,
     AuditViewSet,
-    ComplianceIssueViewSet
+    ComplianceIssueViewSet,
+    GovernanceDashboardViewSet
 )
 
 app_name = 'governance'
@@ -14,6 +15,7 @@ router.register('policies', ESGPolicyViewSet, basename='policy')
 router.register('acknowledgements', PolicyAcknowledgementViewSet, basename='acknowledgement')
 router.register('audits', AuditViewSet, basename='audit')
 router.register('compliance-issues', ComplianceIssueViewSet, basename='compliance-issue')
+router.register('dashboard', GovernanceDashboardViewSet, basename='dashboard')
 
 urlpatterns = [
     path('', include(router.urls)),

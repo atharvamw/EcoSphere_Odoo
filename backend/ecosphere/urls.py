@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from apps.core.views import CookieTokenObtainPairView, CookieTokenRefreshView, LogoutView
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='/api/v1/docs/', permanent=False)),
     path('admin/', admin.site.urls),
     
     # Auth endpoints

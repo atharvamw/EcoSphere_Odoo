@@ -14,6 +14,8 @@ from apps.gamification.models import (
     Badge,
     EmployeeBadge
 )
+from apps.core.models import Employee
+from django.db.models import Sum
 from apps.gamification.serializers import (
     RewardSerializer,
     RewardRedemptionSerializer,
@@ -97,3 +99,36 @@ class EmployeeBadgeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = EmployeeBadge.objects.all()
     serializer_class = EmployeeBadgeSerializer
     permission_classes = [IsAuthenticated]
+
+
+class GamificationDashboardViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
+    @action(detail=False, methods=['get'])
+    def leaderboard(self, request):
+        employees = Employee.objects.get_leaderboard_ranking()[:10]
+        data = []
+        for rank, emp in enumerate(employees, 1):
+            data.append({
+                "id": str(emp.id),
+                "name": emp.user.get_full_name() or emp.user.username,
+                "department": emp.department.name if emp.department else "None",
+                "xp": emp.xp_total,
+                "rank": rank,
+                "avatar": f"https://api.dicebear.com/7.x/avataaars/svg?seed={emp.id}"
+            })
+        return Response(data)
+
+    @action(detail=False, methods=['get'])
+    def kpis(self, request):
+        total_xp_earned = Employee.objects.aggregate(total=Sum('xp_total'))['total'] or 0
+        active_challenges = Challenge.objects.filter(status='active').count()
+        completed_challenges = Challenge.objects.filter(status='completed').count()
+        rewards_redeemed = RewardRedemption.objects.count()
+
+        return Response({
+            "totalXPEarned": {"value": total_xp_earned, "trend": "+0%"},
+            "activeChallenges": {"value": active_challenges, "trend": "+0"},
+            "completedChallenges": {"value": completed_challenges, "trend": "+0"},
+            "rewardsRedeemed": {"value": rewards_redeemed, "trend": "0"}
+        })

@@ -8,7 +8,8 @@ from apps.gamification.views import (
     GoalViewSet,
     ChallengeParticipationViewSet,
     BadgeViewSet,
-    EmployeeBadgeViewSet
+    EmployeeBadgeViewSet,
+    GamificationDashboardViewSet
 )
 
 app_name = 'gamification'
@@ -22,6 +23,7 @@ router.register('goals', GoalViewSet, basename='goal')
 router.register('participations', ChallengeParticipationViewSet, basename='participation')
 router.register('badges', BadgeViewSet, basename='badge')
 router.register('employee-badges', EmployeeBadgeViewSet, basename='employee-badge')
+router.register('dashboard', GamificationDashboardViewSet, basename='dashboard')
 
 urlpatterns = [
     path('', include(router.urls)),
