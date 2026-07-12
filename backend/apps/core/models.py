@@ -35,5 +35,21 @@ class Employee(models.Model):
             models.CheckConstraint(condition=models.Q(points_balance__gte=0), name='points_must_be_positive')
         ]
         
-    def __str__(self):
-        return self.user.username
+        def __str__(self):
+            return self.user.username
+
+class SiteSettings(models.Model):
+    """Singleton model to store global configurations like ESG weights."""
+    weight_environmental = models.FloatField(default=0.40)
+    weight_social = models.FloatField(default=0.30)
+    weight_governance = models.FloatField(default=0.30)
+    
+    def save(self, *args, **kwargs):
+        # Enforce singleton pattern
+        self.pk = 1
+        super().save(*args, **kwargs)
+        
+    @classmethod
+    def get_settings(cls):
+        obj, created = cls.objects.get_or_create(pk=1)
+        return obj
