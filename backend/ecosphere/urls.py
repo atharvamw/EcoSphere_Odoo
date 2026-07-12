@@ -1,9 +1,15 @@
 from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from apps.core.views import CookieTokenObtainPairView, CookieTokenRefreshView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+    # Auth endpoints
+    path('api/v1/auth/login/', CookieTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/v1/auth/refresh/', CookieTokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v1/auth/logout/', LogoutView.as_view(), name='token_logout'),
     
     # OpenAPI Schema generation and interactive documentation (Swagger & Redoc)
     path('api/v1/schema/', SpectacularAPIView.as_view(), name='schema'),
