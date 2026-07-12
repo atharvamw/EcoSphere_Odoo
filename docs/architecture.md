@@ -352,6 +352,7 @@ erDiagram
 
     BADGE ||--o{ EMPLOYEE_BADGE : unlocked_as
     REWARD ||--o{ REWARD_REDEMPTION : claimed_as
+    PRODUCT ||--o| PRODUCT_ESG_PROFILE : has_profile
 
     DEPARTMENT {
         uuid id PK
@@ -380,6 +381,25 @@ erDiagram
         decimal environmental_weight
         decimal social_weight
         decimal governance_weight
+    }
+
+    PRODUCT {
+        uuid id PK
+        string name
+        string code
+        string sku
+        string status
+    }
+
+    PRODUCT_ESG_PROFILE {
+        uuid id PK
+        uuid product_id FK
+        decimal carbon_footprint_co2e
+        decimal recycled_content_pct
+        bool has_biodegradable_packaging
+        bool hazardous_materials_flag
+        datetime created_at
+        datetime updated_at
     }
 
     EMISSION_FACTOR {
@@ -610,6 +630,10 @@ ALTER TABLE department_score ADD CONSTRAINT chk_gov_score_range CHECK (governanc
 -- ESG weights must sum to 1.0
 ALTER TABLE site_settings ADD CONSTRAINT chk_weights_sum
     CHECK (environmental_weight + social_weight + governance_weight = 1.0);
+
+-- Product ESG Profile: non-negative footprint and percentage range
+ALTER TABLE product_esg_profile ADD CONSTRAINT chk_carbon_footprint_non_negative CHECK (carbon_footprint_co2e >= 0);
+ALTER TABLE product_esg_profile ADD CONSTRAINT chk_recycled_content_range CHECK (recycled_content_pct BETWEEN 0 AND 100);
 ```
 
 ### 5.3 Indexing Strategy
@@ -623,6 +647,7 @@ CREATE INDEX idx_compliance_due ON compliance_issue (due_date, status);
 CREATE INDEX idx_dept_score_period ON department_score (department_id, period_start, period_end);
 CREATE INDEX idx_employee_badge ON employee_badge (employee_id, badge_id);
 CREATE INDEX idx_challenge_part_employee ON challenge_participation (employee_id, status);
+CREATE UNIQUE INDEX idx_product_esg_profile_product ON product_esg_profile (product_id);
 ```
 
 ---
