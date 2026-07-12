@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from .models import EmployeeParticipation
 from apps.core.models import Employee
+from .signals import participation_approved
 
 class SocialService:
     @staticmethod
@@ -39,8 +40,13 @@ class SocialService:
         employee.points_balance += participation.activity.reward_points
         employee.save(update_fields=['xp_total', 'points_balance'])
         
-        # Note: According to architecture.md, signals like `xp_awarded` should fire after this 
-        # to trigger Badge Auto-Award logic in the gamification app.
-        # This keeps modules decoupled.
+        # Fire the decoupled signal for other apps to process (e.g., gamification, notifications)
+        participation_approved.send(
+            sender=SocialService,
+            participation=participation,
+            employee=employee,
+            xp_awarded=participation.activity.reward_xp,
+            points_awarded=participation.activity.reward_points
+        )
         
         return participation
