@@ -44,3 +44,38 @@ class EmployeeParticipationViewSet(viewsets.ModelViewSet):
                 {"detail": "User is not associated with an Employee profile."},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+    @action(detail=False, methods=['post'])
+    def bulk_approve(self, request):
+        ids = request.data.get('ids', [])
+        approver = request.user.employee
+        approved = []
+        for pk in ids:
+            try:
+                approved_part = SocialService.approve_participation(
+                    participation_id=str(pk),
+                    approver_id=str(approver.id)
+                )
+                approved.append(str(pk))
+            except Exception:
+                pass
+        return Response({"success": True, "approved": approved}, status=status.HTTP_200_OK)
+
+
+class SocialDashboardViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
+    @action(detail=False, methods=['get'])
+    def kpis(self, request):
+        total_initiatives = CSRActivity.objects.count()
+        active_participants = EmployeeParticipation.objects.filter(status='approved').count()
+        pending_approvals = EmployeeParticipation.objects.filter(status='pending').count()
+        # Mock social impact score for now
+        social_impact_score = 85
+
+        return Response({
+            "hours": {"value": 1250, "trend": "+12%"},
+            "volunteers": {"value": active_participants, "trend": "+5"},
+            "impactScore": {"value": social_impact_score, "trend": "+2"},
+            "diversity": {"value": 88, "trend": "0"}
+        })

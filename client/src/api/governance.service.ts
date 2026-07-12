@@ -1,56 +1,87 @@
-import { generatePolicies, generateIssues, generateAuditLogs, getMockGovKPIs } from '@/lib/mock-gov-data';
-
-let memoryPolicies = generatePolicies(25);
-let memoryIssues = generateIssues(40);
-let memoryAudits = generateAuditLogs(100);
-
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+import { api } from '@/lib/api';
 
 export const governanceService = {
   getKPIs: async () => {
-    await delay(300);
-    return getMockGovKPIs();
+    try {
+      const response = await api.get('/governance/dashboard/kpis/');
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch governance KPIs", error);
+      throw error;
+    }
   },
 
   getPolicies: async () => {
-    await delay(500);
-    return memoryPolicies;
+    try {
+      const response = await api.get('/governance/policies/');
+      return response.data.map((p: any) => ({
+        id: p.id,
+        title: p.title,
+        version: p.version || '1.0',
+        effectiveDate: p.effective_date ? new Date(p.effective_date).toISOString().split('T')[0] : 'N/A',
+        content: p.content || '<p>No content provided</p>',
+        isAcknowledgedByMe: false 
+      }));
+    } catch (error) {
+      console.error("Failed to fetch policies", error);
+      return [];
+    }
   },
 
   getIssues: async () => {
-    await delay(600);
-    return memoryIssues;
+    try {
+      const response = await api.get('/governance/compliance-issues/');
+      return response.data.map((i: any) => ({
+        id: i.id,
+        title: i.title,
+        severity: i.severity === 'high' ? 'High' : i.severity === 'medium' ? 'Medium' : 'Low',
+        department: 'Governance',
+        assignee: 'Unassigned',
+        dueDate: i.due_date ? new Date(i.due_date).toISOString().split('T')[0] : 'N/A',
+        status: i.status === 'open' ? 'Open' : i.status === 'in_progress' ? 'In Progress' : 'Resolved'
+      }));
+    } catch (error) {
+      console.error("Failed to fetch issues", error);
+      return [];
+    }
   },
 
   getAuditLogs: async () => {
-    await delay(700);
-    return memoryAudits;
+    try {
+      const response = await api.get('/governance/audits/');
+      return response.data.map((a: any) => ({
+        id: a.id,
+        user: 'System', 
+        action: a.action,
+        module: a.module,
+        details: a.details,
+        timestamp: new Date(a.timestamp).toLocaleString(),
+        ipAddress: '127.0.0.1' 
+      }));
+    } catch (error) {
+      console.error("Failed to fetch audit logs", error);
+      return [];
+    }
   },
 
   acknowledgePolicy: async (policyId: string) => {
-    await delay(1200); // Simulate document processing
-    memoryPolicies = memoryPolicies.map(p => 
-      p.id === policyId ? { ...p, isAcknowledgedByMe: true } : p
-    );
-    // Automatically inject an audit log entry
-    memoryAudits = [{
-      id: `AUD-${Date.now()}`,
-      user: 'current_user@company.com',
-      action: 'Acknowledged Policy',
-      module: 'Governance',
-      details: `Policy ID: ${policyId}`,
-      timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
-      ipAddress: '192.168.1.1'
-    }, ...memoryAudits];
-    
-    return { success: true };
+    try {
+      const response = await api.post(`/governance/policies/${policyId}/acknowledge/`);
+      return { success: true };
+    } catch (error: any) {
+      console.error("Failed to acknowledge policy", error);
+      throw error;
+    }
   },
 
   updateIssueStatus: async (issueId: string, status: any) => {
-    await delay(400);
-    memoryIssues = memoryIssues.map(issue => 
-      issue.id === issueId ? { ...issue, status } : issue
-    );
-    return { success: true };
+    try {
+      const backendStatus = status === 'Open' ? 'open' : status === 'In Progress' ? 'in_progress' : 'resolved';
+      const response = await api.patch(`/governance/compliance-issues/${issueId}/`, { status: backendStatus });
+      return { success: true };
+    } catch (error: any) {
+      console.error("Failed to update issue status", error);
+      throw error;
+    }
   }
 };
