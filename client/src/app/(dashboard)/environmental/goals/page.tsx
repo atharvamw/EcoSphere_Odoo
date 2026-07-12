@@ -42,7 +42,7 @@ export default function EnvironmentalGoalsPage() {
             </StaggerItem>
           ))
         ) : (
-          goals?.map((goal) => (
+          goals?.map((goal: any) => (
             <StaggerItem key={goal.id}>
               <GoalProgressCard goal={goal} isLoading={false} />
             </StaggerItem>

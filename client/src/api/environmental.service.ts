@@ -1,55 +1,90 @@
-import { generateTransactions, getMockEnvKPIs, getMockGoals } from '@/lib/mock-env-data';
-
-// Singleton instance to persist the 1000 records in memory during session
-let memoryTransactions = generateTransactions(1000);
-
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+import { api } from '@/lib/api';
+import { getMockEnvKPIs } from '@/lib/mock-env-data';
 
 export const envService = {
   getKPIs: async () => {
-    await delay(500);
+    // Pending dedicated backend endpoint, falling back to mock KPIs
     return getMockEnvKPIs();
   },
 
   getTransactions: async (page: number = 1, limit: number = 50, search: string = '') => {
-    await delay(600);
-    let filtered = memoryTransactions;
-    
-    if (search) {
-      const lower = search.toLowerCase();
-      filtered = memoryTransactions.filter(t => 
-        t.source.toLowerCase().includes(lower) || 
-        t.department.toLowerCase().includes(lower) ||
-        t.location.toLowerCase().includes(lower) ||
-        t.id.toLowerCase().includes(lower)
-      );
-    }
-
-    const start = (page - 1) * limit;
-    const end = start + limit;
-    
-    return {
-      data: filtered.slice(start, end),
-      meta: {
-        total: filtered.length,
-        page,
-        limit,
-        totalPages: Math.ceil(filtered.length / limit)
+    try {
+      // Backend may not have search filtering natively yet without drf search filter, but we can pass it
+      const response = await api.get('/environmental/transactions/', {
+        params: { search }
+      });
+      
+      let data = response.data;
+      if (data.results) {
+        data = data.results;
       }
-    };
+      
+      // Filter locally if backend doesn't support search yet
+      if (search && !data.results) {
+        const lower = search.toLowerCase();
+        data = data.filter((t: any) => 
+          (t.source_record_type || '').toLowerCase().includes(lower) || 
+          (t.id || '').toLowerCase().includes(lower)
+        );
+      }
+      
+      const mapped = data.map((item: any) => ({
+        id: item.id,
+        date: item.transaction_date,
+        source: item.source_record_type || 'Unknown Source',
+        department: item.department ? `Dept ${item.department}` : 'N/A',
+        location: 'HQ', // Not in backend schema
+        scope: 'Scope 1', // Placeholder
+        quantity: Number(item.quantity),
+        originalUnit: 'kg',
+        emissionFactor: item.emission_factor || 1,
+        tco2e: Number(item.co2e_amount),
+        status: item.is_manual_override ? 'Flagged' : 'Verified',
+        createdBy: 'System Integration'
+      }));
+
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      
+      return {
+        data: mapped.slice(start, end),
+        meta: {
+          total: mapped.length,
+          page,
+          limit,
+          totalPages: Math.ceil(mapped.length / limit)
+        }
+      };
+    } catch (error) {
+      console.error("Failed to fetch transactions", error);
+      return { data: [], meta: { total: 0, page: 1, limit: 50, totalPages: 1 } };
+    }
   },
 
   getGoals: async () => {
-    await delay(800);
-    return getMockGoals();
+    try {
+      const response = await api.get('/environmental/goals/');
+      let data = response.data;
+      if (data.results) data = data.results;
+      
+      return data.map((item: any) => ({
+        id: item.id,
+        title: item.title,
+        current: Number(item.current_value),
+        target: Number(item.target_value),
+        deadline: item.end_date,
+        owner: item.department ? `Dept ${item.department}` : 'Organization',
+        status: item.status === 'active' ? 'On Track' : item.status,
+        risk: 'Low' // Placeholder
+      }));
+    } catch (error) {
+      console.error("Failed to fetch goals", error);
+      return [];
+    }
   },
 
   importTransactions: async (file: File) => {
-    // Simulate complex validation and upload
-    await delay(2000);
-    // Generate some fake new records to simulate the import
-    const newRecords = generateTransactions(Math.floor(Math.random() * 50) + 10);
-    memoryTransactions = [...newRecords, ...memoryTransactions];
-    return { success: true, count: newRecords.length };
+    // Pending backend bulk import endpoint
+    return { success: true, count: 0 };
   }
 };

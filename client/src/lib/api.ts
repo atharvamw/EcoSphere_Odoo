@@ -8,20 +8,17 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
  */
 export const api = axios.create({
   baseURL: API_URL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Request Interceptor: Attach JWT token
+// Request Interceptor
 api.interceptors.request.use(
   (config) => {
-    // In a real app, retrieve the token from cookies or local storage.
-    // Example: const token = getCookie('auth_token');
-    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    // Django handles the token via HttpOnly cookies, so we don't need to manually inject it.
+    // If you ever need CSRF token logic, you can add it here.
     return config;
   },
   (error) => Promise.reject(error)
