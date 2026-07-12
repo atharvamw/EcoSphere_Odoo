@@ -1,10 +1,9 @@
 import pytest
 import concurrent.futures
-from django.db import transaction, connection
+from django.db import connection
 from django.core.exceptions import ValidationError
 from apps.gamification.services import GamificationService
-from apps.gamification.models import Reward, RewardRedemption
-from apps.core.models import Employee
+from apps.gamification.models import RewardRedemption
 
 @pytest.mark.django_db(transaction=True)
 def test_redeem_reward_success(employee, reward):

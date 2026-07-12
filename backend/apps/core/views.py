@@ -55,7 +55,7 @@ class CookieTokenRefreshView(TokenRefreshView):
         serializer = self.get_serializer(data=mutable_data)
         try:
             serializer.is_valid(raise_exception=True)
-        except Exception as e:
+        except Exception:
             return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
             
         response = Response(serializer.validated_data, status=status.HTTP_200_OK)
